@@ -1,0 +1,97 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Rainbow Cutie Site</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <style>
+    body {
+      background: linear-gradient(135deg, #ff9a9e, #fad0c4, #fbc2eb, #a18cd1, #fbc2eb, #fad0c4);
+      background-size: 400% 400%;
+      animation: gradientMove 10s ease infinite;
+      cursor: url('https://cdn-icons-png.flaticon.com/512/833/833472.png'), auto;
+    }
+
+    @keyframes gradientMove {
+      0% { background-position: 0% 50%; }
+      50% { background-position: 100% 50%; }
+      100% { background-position: 0% 50%; }
+    }
+
+    .rainbow-text {
+      background: linear-gradient(90deg, red, orange, yellow, green, blue, indigo, violet);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      font-weight: bold;
+      animation: shine 3s linear infinite;
+    }
+
+    @keyframes shine {
+      0% { background-position: 0%; }
+      100% { background-position: 100%; }
+    }
+
+    .heart {
+      position: absolute;
+      width: 10px;
+      height: 10px;
+      background: red;
+      transform: rotate(-45deg);
+      animation: float 1s ease forwards;
+    }
+
+    .heart::before,
+    .heart::after {
+      content: '';
+      position: absolute;
+      width: 10px;
+      height: 10px;
+      background: red;
+      border-radius: 50%;
+    }
+
+    .heart::before {
+      top: -5px;
+      left: 0;
+    }
+
+    .heart::after {
+      left: 5px;
+      top: 0;
+    }
+
+    @keyframes float {
+      0% { opacity: 1; transform: translateY(0) scale(1) rotate(-45deg); }
+      100% { opacity: 0; transform: translateY(-50px) scale(1.5) rotate(-45deg); }
+    }
+  </style>
+</head>
+<body class="text-center p-8 font-comic">
+  <h1 class="rainbow-text text-4xl mb-8">Welcome to Rainbow Cutie Land 🌈💖</h1>
+  <button class="bg-gradient-to-r from-red-500 via-yellow-400 to-violet-500 text-white font-bold py-2 px-6 rounded-full shadow-lg hover:scale-110 transition-transform" onclick="showHearts()">Click Me!</button>
+
+  <div class="dock fixed bottom-8 left-1/2 transform -translate-x-1/2 flex gap-4 bg-white/20 backdrop-blur-lg p-4 rounded-3xl shadow-xl z-50">
+    <img src="https://cdn-icons-png.flaticon.com/512/833/833472.png" alt="Heart" class="w-12 transition-transform hover:scale-150" />
+    <img src="https://cdn-icons-png.flaticon.com/512/889/889648.png" alt="Star" class="w-12 transition-transform hover:scale-150" />
+    <img src="https://cdn-icons-png.flaticon.com/512/616/616408.png" alt="Music" class="w-12 transition-transform hover:scale-150" />
+    <img src="https://cdn-icons-png.flaticon.com/512/833/833539.png" alt="Rainbow" class="w-12 transition-transform hover:scale-150" />
+  </div>
+
+  <script>
+    function showHearts() {
+      for (let i = 0; i < 5; i++) {
+        const heart = document.createElement('div');
+        heart.classList.add('heart');
+        heart.style.left = Math.random() * window.innerWidth + 'px';
+        heart.style.top = (window.innerHeight - 50) + 'px';
+        document.body.appendChild(heart);
+
+        setTimeout(() => {
+          heart.remove();
+        }, 1000);
+      }
+    }
+  </script>
+</body>
+</html>
