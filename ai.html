@@ -1,0 +1,72 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Chat with Rainbow AI 🌈🤖</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <style>
+    body {
+      background: linear-gradient(135deg, #ffecd2, #fcb69f, #f6d365, #fda085);
+      background-size: 400% 400%;
+      animation: gradientMove 10s ease infinite;
+      cursor: url('https://cdn-icons-png.flaticon.com/512/833/833472.png'), auto;
+    }
+
+    @keyframes gradientMove {
+      0% { background-position: 0% 50%; }
+      50% { background-position: 100% 50%; }
+      100% { background-position: 0% 50%; }
+    }
+
+    .rainbow-text {
+      background: linear-gradient(90deg, red, orange, yellow, green, blue, indigo, violet);
+      background-clip: text;
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      font-weight: bold;
+      animation: shine 3s linear infinite;
+    }
+
+    @keyframes shine {
+      0% { background-position: 0%; }
+      100% { background-position: 100%; }
+    }
+  </style>
+</head>
+<body class="p-8 text-center font-sans">
+  <h1 class="rainbow-text text-4xl mb-6">Chat with Rainbow AI 🌈🤖</h1>
+
+  <div class="max-w-xl mx-auto bg-white/50 backdrop-blur-md p-6 rounded-2xl shadow-lg">
+    <input id="apiKey" type="text" placeholder="Enter your API key here" class="w-full mb-4 p-3 rounded-lg border border-purple-300 focus:outline-none focus:ring-2 focus:ring-purple-400" />
+
+    <textarea id="userInput" rows="3" placeholder="Ask me anything..." class="w-full p-4 rounded-lg border border-pink-300 focus:outline-none focus:ring-2 focus:ring-pink-400"></textarea>
+    <button onclick="chatWithAI()" class="mt-4 bg-gradient-to-r from-pink-400 via-yellow-400 to-purple-500 text-white font-bold py-2 px-6 rounded-full shadow hover:scale-105 transition-transform">
+      ✨ Send ✨
+    </button>
+
+    <div id="chatResponse" class="mt-6 text-left text-gray-800 whitespace-pre-wrap"></div>
+  </div>
+
+  <script>
+    async function chatWithAI() {
+      const input = document.getElementById('userInput').value;
+      const apiKey = document.getElementById('apiKey').value;
+      const responseDiv = document.getElementById('chatResponse');
+      responseDiv.innerText = 'Rainbow AI is thinking... 🌈💭';
+
+      const res = await fetch(`https://generativelanguage.googleapis.com/v1beta/models/gemini-pro:generateContent?key=${apiKey}`, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          contents: [{ parts: [{ text: input }] }]
+        })
+      });
+
+      const data = await res.json();
+      const aiText = data.candidates?.[0]?.content?.parts?.[0]?.text || 'Oops! Rainbow AI got shy... 😳';
+      responseDiv.innerText = aiText;
+    }
+  </script>
+</body>
+</html>
