@@ -36,7 +36,7 @@
 </head>
 <body class="p-8 text-center font-sans">
   <h1 class="rainbow-text text-4xl mb-6">Chat with Rainbow AI 🌈🤖</h1>
-
+ <h2 class="rainbow-text text-2xl mb-6">Powered by Google Gemini 1.5 Flash</h2>
   <div class="max-w-xl mx-auto bg-white/50 backdrop-blur-md p-6 rounded-2xl shadow-lg">
     <input id="apiKey" type="text" placeholder="Enter your API key here" class="w-full mb-4 p-3 rounded-lg border border-purple-300 focus:outline-none focus:ring-2 focus:ring-purple-400" />
 
@@ -55,7 +55,7 @@
       const responseDiv = document.getElementById('chatResponse');
       responseDiv.innerText = 'Rainbow AI is thinking... 🌈💭';
 
-      const res = await fetch(`https://generativelanguage.googleapis.com/v1beta/models/gemini-pro:generateContent?key=${apiKey}`, {
+      const res = await fetch(`https://generativelanguage.googleapis.com/v1beta/models/gemini-1.5-flash:generateContent?key=${apiKey}`, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({
