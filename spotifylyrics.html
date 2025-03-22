@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Spotify Lyrics Viewer</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            text-align: center;
+            background: #1DB954;
+            color: white;
+            margin: 0;
+            padding: 2em;
+        }
+        #lyrics {
+            margin-top: 2em;
+            white-space: pre-line;
+            font-size: 1.2em;
+        }
+    </style>
+</head>
+<body>
+    <h1>Now Playing on Spotify</h1>
+    <div id="track-info">
+        <p><strong>Track:</strong> <span id="track-name">N/A</span></p>
+        <p><strong>Artist:</strong> <span id="artist-name">N/A</span></p>
+    </div>
+    <div id="lyrics">Lyrics will appear here...</div>
+
+    <script>
+        // Replace with your own access token from Spotify
+        const accessToken = 'YOUR_SPOTIFY_ACCESS_TOKEN';
+
+        async function getCurrentlyPlaying() {
+            const response = await fetch('https://api.spotify.com/v1/me/player/currently-playing', {
+                headers: {
+                    'Authorization': 'Bearer ' + accessToken
+                }
+            });
+            if (response.status === 204) {
+                document.getElementById('lyrics').innerText = 'No track currently playing.';
+                return;
+            }
+            const data = await response.json();
+            const trackName = data.item.name;
+            const artistName = data.item.artists[0].name;
+
+            document.getElementById('track-name').innerText = trackName;
+            document.getElementById('artist-name').innerText = artistName;
+
+            getLyrics(artistName, trackName);
+        }
+
+        async function getLyrics(artist, title) {
+            try {
+                const response = await fetch(`https://api.lyrics.ovh/v1/${encodeURIComponent(artist)}/${encodeURIComponent(title)}`);
+                const data = await response.json();
+                if (data.lyrics) {
+                    document.getElementById('lyrics').innerText = data.lyrics;
+                } else {
+                    document.getElementById('lyrics').innerText = 'Lyrics not found.';
+                }
+            } catch (error) {
+                document.getElementById('lyrics').innerText = 'Error fetching lyrics.';
+            }
+        }
+
+        // Call function every 10 seconds to update
+        setInterval(getCurrentlyPlaying, 10000);
+        getCurrentlyPlaying();
+    </script>
+</body>
+</html>
